@@ -46,18 +46,29 @@ const initialFacts = [
   },
 ];
 
+function isValidHttpUrl(string) {
+  try {
+    const newUrl = new URL(string);
+    return newUrl.protocol === "http:" || newUrl.protocol === "https:";
+  } catch (err) {
+    return false;
+  }
+}
+
 function App() {
   const [openForm, setOpenForm] = useState(false);
+
+  const [facts, setFacts] = useState([initialFacts]);
 
   return (
     <>
       <Header openForm={openForm} setOpenForm={setOpenForm} />
 
-      {openForm ? <NewFactForm /> : ""}
+      {openForm ? <NewFactForm setFacts={setFacts} /> : ""}
 
       <main className="main">
         <Category />
-        <FactList />
+        <FactList facts={facts} />
       </main>
     </>
   );
@@ -79,14 +90,29 @@ function Header({ openForm, setOpenForm }) {
     </header>
   );
 }
-function NewFactForm() {
+
+function NewFactForm({ setFacts }) {
   const [text, setText] = useState("");
   const [source, setSource] = useState("");
   const [category, setCategory] = useState("");
 
   function addHandle(e) {
     e.preventDefault();
-    console.log("Adding handle2");
+
+    if (text && isValidHttpUrl(source) && category && text.length <= 200) {
+      const newFact = {
+        id: Date.now(),
+        text,
+        source,
+        category,
+        votesInteresting: 0,
+        votesMindblowing: 0,
+        votesFalse: 0,
+        createdIn: new Date().getFullYear(),
+      };
+
+      setFacts((facts) => [newFact, ...facts]);
+    }
   }
 
   return (
@@ -114,9 +140,7 @@ function NewFactForm() {
           );
         })}
       </select>
-      <button className="btn btn-large" >
-        Post
-      </button>
+      <button className="btn btn-large">Post</button>
     </form>
   );
 }
@@ -144,13 +168,12 @@ function Category() {
   );
 }
 
-function FactList() {
-  const facts = initialFacts;
+function FactList({ facts }) {
   return (
     <section>
       <ul className="facts-list">
         {facts.map((fact) => (
-          <Fact key={fact.id} fact={fact} />
+          <Fact key={fact.id} facts={facts} />
         ))}
       </ul>
       <p>There are {facts.length} facts in the Database.Add your Own!</p>
@@ -158,31 +181,31 @@ function FactList() {
   );
 }
 
-function Fact({ fact }) {
+function Fact({ facts }) {
   return (
     <li className="fact">
       <p>
-        {fact.text}
+        {facts.text}
         <a
           className="source"
-          href={fact.source}
+          href={facts.source}
           target="_blank"
           rel="noopener noreferrer">
           (Source)
         </a>
       </p>
-      <span
+      {/* <span
         className="tag"
         style={{
-          backgroundColor: CATEGORIES.find((cat) => cat.name === fact.category)
+          backgroundColor: CATEGORIES.find((cat) => cat.name === facts.category)
             .color,
         }}>
-        {fact.category}
-      </span>
+        {facts.category}
+      </span> */}
       <div className="vote-buttons">
-        <button>👍 {fact.votesInteresting}</button>
-        <button>🤯 {fact.votesMindblowing}</button>
-        <button>⛔️ {fact.votesFalse}</button>
+        <button>👍 {facts.votesInteresting}</button>
+        <button>🤯 {facts.votesMindblowing}</button>
+        <button>⛔️ {facts.votesFalse}</button>
       </div>
     </li>
   );
