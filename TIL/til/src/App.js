@@ -75,7 +75,27 @@ function NewFactForm() {
   return <form className="fact-form">fact form</form>;
 }
 function Category() {
-  return <aside>Category</aside>;
+  return (
+    <aside>
+      <ul>
+        <li className="category">
+          <button className="btn btn-all-categories">All</button>
+        </li>
+
+        {CATEGORIES.map((cat) => {
+          return (
+            <li className="category" key={cat.name}>
+              <button
+                className="btn btn-category"
+                style={{ backgroundColor: cat.color }}>
+                {cat.name}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </aside>
+  );
 }
 
 function FactList() {
@@ -84,35 +104,42 @@ function FactList() {
     <section>
       <ul className="facts-list">
         {facts.map((fact) => (
-          <li className="fact" key={fact.id}>
-            <p>
-              {fact.text}
-              <a
-                className="source"
-                href={fact.source}
-                target="_blank"
-                rel="noopener noreferrer">
-                (Source)
-              </a>
-            </p>
-            <span
-              className="tag"
-              style={{
-                backgroundColor: CATEGORIES.find(
-                  (cat) => cat.name === fact.category
-                ).color,
-              }}>
-              {fact.category}
-            </span>
-            <div className="vote-buttons">
-              <button>👍 {fact.votesInteresting}</button>
-              <button>🤯 {fact.votesMindblowing}</button>
-              <button>⛔️ {fact.votesFalse}</button>
-            </div>
-          </li>
+          <Fact key={fact.id} fact={fact} />
         ))}
       </ul>
+      <p>There are {facts.length} facts in the Database.Add your Own!</p>
     </section>
   );
 }
+
+function Fact({ fact }) {
+  return (
+    <li className="fact">
+      <p>
+        {fact.text}
+        <a
+          className="source"
+          href={fact.source}
+          target="_blank"
+          rel="noopener noreferrer">
+          (Source)
+        </a>
+      </p>
+      <span
+        className="tag"
+        style={{
+          backgroundColor: CATEGORIES.find((cat) => cat.name === fact.category)
+            .color,
+        }}>
+        {fact.category}
+      </span>
+      <div className="vote-buttons">
+        <button>👍 {fact.votesInteresting}</button>
+        <button>🤯 {fact.votesMindblowing}</button>
+        <button>⛔️ {fact.votesFalse}</button>
+      </div>
+    </li>
+  );
+}
+
 export default App;
