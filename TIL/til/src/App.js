@@ -58,7 +58,7 @@ function isValidHttpUrl(string) {
 function App() {
   const [openForm, setOpenForm] = useState(false);
 
-  const [facts, setFacts] = useState([initialFacts]);
+  const [facts, setFacts] = useState(initialFacts);
 
   return (
     <>
@@ -93,7 +93,7 @@ function Header({ openForm, setOpenForm }) {
 
 function NewFactForm({ setFacts }) {
   const [text, setText] = useState("");
-  const [source, setSource] = useState("");
+  const [source, setSource] = useState("https://www.google.com");
   const [category, setCategory] = useState("");
 
   function addHandle(e) {
@@ -173,7 +173,7 @@ function FactList({ facts }) {
     <section>
       <ul className="facts-list">
         {facts.map((fact) => (
-          <Fact key={fact.id} facts={facts} />
+          <Fact key={fact.id} fact={fact} />
         ))}
       </ul>
       <p>There are {facts.length} facts in the Database.Add your Own!</p>
@@ -181,31 +181,31 @@ function FactList({ facts }) {
   );
 }
 
-function Fact({ facts }) {
+function Fact({ fact }) {
   return (
     <li className="fact">
       <p>
-        {facts.text}
+        {fact.text}
         <a
           className="source"
-          href={facts.source}
+          href={fact.source}
           target="_blank"
           rel="noopener noreferrer">
           (Source)
         </a>
       </p>
-      {/* <span
+      <span
         className="tag"
         style={{
-          backgroundColor: CATEGORIES.find((cat) => cat.name === facts.category)
+          backgroundColor: CATEGORIES.find((cat) => cat.name === fact.category)
             .color,
         }}>
-        {facts.category}
-      </span> */}
+        {fact.category}
+      </span>
       <div className="vote-buttons">
-        <button>👍 {facts.votesInteresting}</button>
-        <button>🤯 {facts.votesMindblowing}</button>
-        <button>⛔️ {facts.votesFalse}</button>
+        <button>👍 {fact.votesInteresting}</button>
+        <button>🤯 {fact.votesMindblowing}</button>
+        <button>⛔️ {fact.votesFalse}</button>
       </div>
     </li>
   );
