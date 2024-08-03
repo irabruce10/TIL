@@ -84,24 +84,30 @@ function FactList() {
     <section>
       <ul className="facts-list">
         {facts.map((fact) => (
-          <li className="fact">
+          <li className="fact" key={fact.id}>
             <p>
-              React is being developed by Meta (formerly facebook)
+              {fact.text}
               <a
                 className="source"
-                href="https://opensource.fb.com/"
-                target="_blank">
-
+                href={fact.source}
+                target="_blank"
+                rel="noopener noreferrer">
                 (Source)
               </a>
             </p>
-            <span className="tag" style={{ backgroundColor: "#3b82f6" }}>
-              technology
+            <span
+              className="tag"
+              style={{
+                backgroundColor: CATEGORIES.find(
+                  (cat) => cat.name === fact.category
+                ).color,
+              }}>
+              {fact.category}
             </span>
             <div className="vote-buttons">
-              <button>👍 24</button>
-              <button>🤯 9</button>
-              <button>⛔️ 4</button>
+              <button>👍 {fact.votesInteresting}</button>
+              <button>🤯 {fact.votesMindblowing}</button>
+              <button>⛔️ {fact.votesFalse}</button>
             </div>
           </li>
         ))}
