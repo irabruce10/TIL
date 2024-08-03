@@ -90,7 +90,7 @@ function NewFactForm() {
   }
 
   return (
-    <form className="fact-form">
+    <form className="fact-form" onSubmit={addHandle}>
       <input
         type="text"
         placeholder="Share a fact with the world..."
@@ -114,7 +114,7 @@ function NewFactForm() {
           );
         })}
       </select>
-      <button className="btn btn-large" onClick={addHandle}>
+      <button className="btn btn-large" >
         Post
       </button>
     </form>
