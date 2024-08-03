@@ -47,29 +47,11 @@ const initialFacts = [
 ];
 
 function App() {
-  const [openForm, SetOpenForm] = useState(false);
-
-  function toggle() {}
+  const [openForm, setOpenForm] = useState(false);
 
   return (
     <>
-      <header className="header">
-        <div className="logo">
-          <img
-            src="logo.png"
-            height="68"
-            width="68"
-            alt="Today I Learned Logo"
-          />
-          <h1>T I L</h1>
-        </div>
-
-        <button
-          className="btn btn-large btn-open"
-          onClick={() => SetOpenForm(!openForm)}>
-          Share a fact
-        </button>
-      </header>
+      <Header openForm={openForm} setOpenForm={setOpenForm} />
 
       {openForm ? <NewFactForm /> : ""}
 
@@ -81,6 +63,22 @@ function App() {
   );
 }
 
+function Header({ openForm, setOpenForm }) {
+  return (
+    <header className="header">
+      <div className="logo">
+        <img src="logo.png" height="68" width="68" alt="Today I Learned Logo" />
+        <h1>T I L</h1>
+      </div>
+
+      <button
+        className="btn btn-large btn-open"
+        onClick={() => setOpenForm(!openForm)}>
+        {openForm?'Close':'Share a Fact'}
+      </button>
+    </header>
+  );
+}
 function NewFactForm() {
   return <form className="fact-form">fact form</form>;
 }
