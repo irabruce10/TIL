@@ -1,4 +1,5 @@
 import "./style.css";
+import { useState } from "react";
 
 const CATEGORIES = [
   { name: "technology", color: "#3b82f6" },
@@ -46,6 +47,10 @@ const initialFacts = [
 ];
 
 function App() {
+  const [openForm, SetOpenForm] = useState(false);
+
+  function toggle() {}
+
   return (
     <>
       <header className="header">
@@ -59,10 +64,15 @@ function App() {
           <h1>T I L</h1>
         </div>
 
-        <button className="btn btn-large btn-open">Share a fact</button>
+        <button
+          className="btn btn-large btn-open"
+          onClick={() => SetOpenForm(!openForm)}>
+          Share a fact
+        </button>
       </header>
 
-      <NewFactForm />
+      {openForm ? <NewFactForm /> : ""}
+
       <main className="main">
         <Category />
         <FactList />
