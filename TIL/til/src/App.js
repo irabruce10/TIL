@@ -100,7 +100,11 @@ function App() {
       <main className="main">
         <Category setCurrentCategory={setCurrentCategory} />
 
-        {isLoading ? <Loader /> : <FactList facts={facts} />}
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <FactList facts={facts} setFacts={setFacts} />
+        )}
       </main>
     </>
   );
@@ -148,9 +152,7 @@ function NewFactForm({ setFacts, setOpenForm }) {
         .insert([{ text, source, category }])
         .select();
 
-      
-
-      setFacts((facts) => [newFact[0], ...facts]);
+      if (!error) setFacts((facts) => [newFact[0], ...facts]);
 
       setText("");
       setCategory("");
@@ -217,7 +219,7 @@ function Category({ setCurrentCategory }) {
   );
 }
 
-function FactList({ facts }) {
+function FactList({ facts, setFacts }) {
   if (facts.length === 0) {
     return <p>No facts for this Category. Create the First One..!</p>;
   }
@@ -225,7 +227,7 @@ function FactList({ facts }) {
     <section>
       <ul className="facts-list">
         {facts.map((fact) => (
-          <Fact key={fact.id} fact={fact} />
+          <Fact key={fact.id} fact={fact} setFacts={setFacts} />
         ))}
       </ul>
       <p>There are {facts.length} facts in the Database.Add your Own!</p>
@@ -233,7 +235,21 @@ function FactList({ facts }) {
   );
 }
 
-function Fact({ fact }) {
+function Fact({ fact, setFacts }) {
+  async function handleVotes() {
+    const { data: updatedFact, error } = await supabase
+      .from("facts")
+      .update({
+        votesInteresting: fact.votesInteresting + 1,
+      })
+      .eq("id", fact.id)
+      .select();
+
+    if (!error)
+      setFacts((facts) =>
+        facts.map((f) => (f.id === fact.id ? updatedFact[0] : f))
+      );
+  }
   return (
     <li className="fact">
       <p>
@@ -255,7 +271,7 @@ function Fact({ fact }) {
         {fact.category}
       </span>
       <div className="vote-buttons">
-        <button>👍 {fact.votesInteresting}</button>
+        <button onClick={handleVotes}>👍 {fact.votesInteresting}</button>
         <button>🤯 {fact.votesMindblowing}</button>
         <button>⛔️ {fact.votesFalse}</button>
       </div>
