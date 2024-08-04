@@ -128,22 +128,29 @@ function NewFactForm({ setFacts, setOpenForm }) {
   const [source, setSource] = useState("https://www.google.com");
   const [category, setCategory] = useState("");
 
-  function addHandle(e) {
+  async function addHandle(e) {
     e.preventDefault();
 
     if (text && isValidHttpUrl(source) && category && text.length <= 200) {
-      const newFact = {
-        id: Date.now(),
-        text,
-        source,
-        category,
-        votesInteresting: 0,
-        votesMindblowing: 0,
-        votesFalse: 0,
-        createdIn: new Date().getFullYear(),
-      };
+      // const newFact = {
+      //   id: Date.now(),
+      //   text,
+      //   source,
+      //   category,
+      //   votesInteresting: 0,
+      //   votesMindblowing: 0,
+      //   votesFalse: 0,
+      //   createdIn: new Date().getFullYear(),
+      // };
 
-      setFacts((facts) => [newFact, ...facts]);
+      const { data: newFact, error } = await supabase
+        .from("facts")
+        .insert([{ text, source, category }])
+        .select();
+
+      
+
+      setFacts((facts) => [newFact[0], ...facts]);
 
       setText("");
       setCategory("");
