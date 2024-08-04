@@ -57,15 +57,23 @@ function isValidHttpUrl(string) {
   }
 }
 
+function Loader() {
+  return <p className="message">Loading.....</p>;
+}
+
 function App() {
   const [openForm, setOpenForm] = useState(false);
 
   const [facts, setFacts] = useState([]);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     async function getFacts() {
+      setIsLoading(true);
       let { data: facts, error } = await supabase.from("facts").select("*");
       setFacts(facts);
+      setIsLoading(false);
     }
 
     getFacts();
@@ -83,7 +91,8 @@ function App() {
 
       <main className="main">
         <Category />
-        <FactList facts={facts} />
+
+        {isLoading ? <Loader /> : <FactList facts={facts} />}
       </main>
     </>
   );
