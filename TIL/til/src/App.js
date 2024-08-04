@@ -211,6 +211,9 @@ function Category({ setCurrentCategory }) {
 }
 
 function FactList({ facts }) {
+  if (facts.length === 0) {
+    return <p>No facts for this Category. Create the First One..!</p>;
+  }
   return (
     <section>
       <ul className="facts-list">
