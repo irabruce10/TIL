@@ -68,16 +68,24 @@ function App() {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [currentCategory, setCurrentCategory] = useState("all");
+
   useEffect(() => {
     async function getFacts() {
       setIsLoading(true);
-      let { data: facts, error } = await supabase.from("facts").select("*");
-      setFacts(facts);
+
+      let query = supabase.from("facts").select("*");
+      if (currentCategory !== "all")
+        query = query.eq("category", currentCategory);
+
+      let { data: facts, error } = await query.limit(1000);
+      if (!error) setFacts(facts);
+      else alert("There was an error getting Data from the database");
       setIsLoading(false);
     }
 
     getFacts();
-  }, []);
+  }, [currentCategory]);
 
   return (
     <>
@@ -90,7 +98,7 @@ function App() {
       )}
 
       <main className="main">
-        <Category />
+        <Category setCurrentCategory={setCurrentCategory} />
 
         {isLoading ? <Loader /> : <FactList facts={facts} />}
       </main>
@@ -173,12 +181,16 @@ function NewFactForm({ setFacts, setOpenForm }) {
     </form>
   );
 }
-function Category() {
+function Category({ setCurrentCategory }) {
   return (
     <aside>
       <ul>
         <li className="category">
-          <button className="btn btn-all-categories">All</button>
+          <button
+            className="btn btn-all-categories"
+            onClick={() => setCurrentCategory("all")}>
+            All
+          </button>
         </li>
 
         {CATEGORIES.map((cat) => {
@@ -186,7 +198,8 @@ function Category() {
             <li className="category" key={cat.name}>
               <button
                 className="btn btn-category"
-                style={{ backgroundColor: cat.color }}>
+                style={{ backgroundColor: cat.color }}
+                onClick={() => setCurrentCategory(cat.name)}>
                 {cat.name}
               </button>
             </li>

@@ -15,7 +15,13 @@ body {
 .hidden {
   display: none !important;
 }
-
+.message {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 32px;
+  font-weight: 800px;
+  margin-top: 64px;
+}
 /* MAIN LAYOUT */
 #root {
   max-width: 1500px;
