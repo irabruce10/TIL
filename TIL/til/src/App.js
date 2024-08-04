@@ -64,7 +64,11 @@ function App() {
     <>
       <Header openForm={openForm} setOpenForm={setOpenForm} />
 
-      {openForm ? <NewFactForm setFacts={setFacts} /> : ""}
+      {openForm ? (
+        <NewFactForm setFacts={setFacts} setOpenForm={setOpenForm} />
+      ) : (
+        ""
+      )}
 
       <main className="main">
         <Category />
@@ -91,7 +95,7 @@ function Header({ openForm, setOpenForm }) {
   );
 }
 
-function NewFactForm({ setFacts }) {
+function NewFactForm({ setFacts, setOpenForm }) {
   const [text, setText] = useState("");
   const [source, setSource] = useState("https://www.google.com");
   const [category, setCategory] = useState("");
@@ -112,6 +116,10 @@ function NewFactForm({ setFacts }) {
       };
 
       setFacts((facts) => [newFact, ...facts]);
+
+      setText("");
+      setCategory("");
+      setOpenForm(false);
     }
   }
 
