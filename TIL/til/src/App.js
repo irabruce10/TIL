@@ -90,7 +90,6 @@ function Header({ openForm, setOpenForm }) {
         className="btn btn-large btn-open"
         onClick={() => setOpenForm(!openForm)}>
         {openForm ? "Close" : "Share a Fact"}{" "}
-        <img src="./images/share.png" alt="share a fact" />
       </button>
     </header>
   );

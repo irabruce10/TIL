@@ -5,9 +5,9 @@
 }
 
 body {
-  background-color: #292524;
+  background-color: black;
   color: #fafaf9;
-  font-family: "Sono", sans-serif;
+  font-family: 'Courier New', Courier, monospace;
   padding: 48px 64px 0px;
 }
 
@@ -156,9 +156,9 @@ ul {
   text-transform: uppercase;
   font-size: 17px;
   padding: 16px 0 13px;
-  background-image: linear-gradient(135deg, #3b82f6, #ef4444, #16a34a, #eab308);
+  background-color: #ffbd39;
   color: inherit;
-  border-radius: 100px;
+  border-radius: 5px;
   cursor: pointer;
   transition: 0.3s;
 }
@@ -170,6 +170,11 @@ ul {
 .btn-large {
   font-size: 20px;
   padding: 20px 32px 17px;
+}
+
+.share-img {
+  width: 64px;
+  height: 64px;
 }
 
 .btn-all-categories {
